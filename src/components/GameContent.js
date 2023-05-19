@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import gameMap from "../styles/gamemap.png";
+import gameMap from "../styles/traced.png";
 
 
 
@@ -39,14 +39,14 @@ const GameContent = () => {
   
     const imageBounds = [
       [0, 0], // Coordenada superior izquierda
-      [4096, 8192], // Coordenada inferior derecha (ajusta estos valores según tus necesidades)
+      [16384, 16384], // Coordenada inferior derecha (ajusta estos valores según tus necesidades)
     ];
-    const worldBounds = new L.LatLngBounds( new L.LatLng(0, 0), new L.LatLng(4096, 8192));
+    const worldBounds = new L.LatLngBounds( new L.LatLng(0, 0), new L.LatLng(16384, 16384));
 
     return (
       <div ref={containerRef}>
         <MapContainer
-          center={[2048, 4096]} // Centro del mapa (ajusta estos valores según tus necesidades)
+          center={[8192, 8192]} // Centro del mapa (ajusta estos valores según tus necesidades)
           zoom={0} // Nivel de zoom inicial
           minZoom={-2} // Nivel de zoom mínimo permitido
           maxZoom={3} // Nivel de zoom máximo permitido
