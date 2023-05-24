@@ -1,10 +1,8 @@
-import React from "react";
+/*import React from "react";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import gameMap from "../styles/traced.png";
-
-
 
 import { MapContainer, ImageOverlay, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -17,7 +15,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png').default,
   shadowUrl: require('leaflet/dist/images/marker-shadow.png').default,
 });
-
 
 const GameContent = () => {  
     const imageRef = useRef(null);
@@ -44,7 +41,7 @@ const GameContent = () => {
     const worldBounds = new L.LatLngBounds( new L.LatLng(0, 0), new L.LatLng(16384, 16384));
 
     return (
-      <div ref={containerRef}>
+      <div className="map" ref={containerRef}>
         <MapContainer
           center={[8192, 8192]} // Centro del mapa (ajusta estos valores según tus necesidades)
           zoom={0} // Nivel de zoom inicial
@@ -65,9 +62,33 @@ const GameContent = () => {
         </MapContainer>
       </div>
     );
+
+    
 };
 
 export default GameContent;
 
+*/
 
+import { MapContainer, TileLayer } from "react-leaflet";
+import 'leaflet/dist/leaflet.css';
 
+const GameContent = () => {  
+  const offlineUrl = './qr/{z}/{x}/{y}.png'
+  return (
+    <div className="map" >
+      <MapContainer center={[0, 0]} zoom={3}
+          minZoom={3} // Nivel de zoom mínimo permitido
+          maxZoom={6} // Nivel de zoom máximo permitido
+          style={{ height: '100vh', width: '100%' }}
+      scrollWheelZoom={true}>
+        <TileLayer attribution="its offline"
+        url={`https://${window.location.hostname}/qr/{z}/{x}/{y}.jpg`}/>
+      </MapContainer>
+    </div>
+  );
+
+  
+};
+
+export default GameContent;

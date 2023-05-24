@@ -12,7 +12,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className='div-main-home'>
+        <div className='map'>
             <GameContent />
         </div>
     )
