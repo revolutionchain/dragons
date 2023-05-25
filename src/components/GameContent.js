@@ -74,21 +74,28 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 
 const GameContent = () => {  
-  const offlineUrl = './qr/{z}/{x}/{y}.png'
+  const bounds = [[-69, -180], [69, 180]];
+
+
+  
+
+
+
   return (
     <div className="map" >
       <MapContainer center={[0, 0]} zoom={3}
           minZoom={3} // Nivel de zoom mínimo permitido
           maxZoom={6} // Nivel de zoom máximo permitido
+          maxBounds={bounds}
+          maxBoundsViscosity={1}
           style={{ height: '100vh', width: '100%' }}
       scrollWheelZoom={true}>
         <TileLayer attribution="its offline"
-        url={`https://${window.location.hostname}/qr/{z}/{x}/{y}.jpg`}/>
+        bounds={bounds}
+        url={`http://localhost:3000/qr/{z}/{x}/{y}.jpg`}/>
       </MapContainer>
     </div>
-  );
-
-  
+  );  
 };
 
 export default GameContent;
