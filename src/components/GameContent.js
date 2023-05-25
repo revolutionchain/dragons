@@ -72,19 +72,33 @@ export default GameContent;
 
 import { MapContainer, TileLayer } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
+import { useEffect, useState } from "react";
+
 
 const GameContent = () => {  
+
+
+  const [minZoomState, setMinZoomState] = useState(3); 
+  const [pageLoaded, setPageLoaded] = useState(false); 
+
   const bounds = [[-69, -180], [69, 180]];
 
-
-  
+  useEffect(() => {
+    console.log(window.innerWidth);
+    if(window.innerWidth > 1920){
+      console.log("aqui")
+      setMinZoomState(4);
+    }
+    setPageLoaded(true);
+  })
 
 
 
   return (
     <div className="map" >
+      { pageLoaded &&
       <MapContainer center={[0, 0]} zoom={3}
-          minZoom={3} // Nivel de zoom mínimo permitido
+          minZoom={minZoomState} // Nivel de zoom mínimo permitido
           maxZoom={6} // Nivel de zoom máximo permitido
           maxBounds={bounds}
           maxBoundsViscosity={1}
@@ -94,6 +108,7 @@ const GameContent = () => {
         bounds={bounds}
         url={`http://localhost:3000/qr/{z}/{x}/{y}.jpg`}/>
       </MapContainer>
+      }
     </div>
   );  
 };
