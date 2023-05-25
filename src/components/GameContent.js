@@ -84,9 +84,7 @@ const GameContent = () => {
   const bounds = [[-69, -180], [69, 180]];
 
   useEffect(() => {
-    console.log(window.innerWidth);
     if(window.innerWidth > 1920){
-      console.log("aqui")
       setMinZoomState(4);
     }
     setPageLoaded(true);
@@ -106,7 +104,7 @@ const GameContent = () => {
       scrollWheelZoom={true}>
         <TileLayer attribution="its offline"
         bounds={bounds}
-        url={`http://localhost:3000/qr/{z}/{x}/{y}.jpg`}/>
+        url={`https://${window.location.hostname}/qr/{z}/{x}/{y}.jpg`}/>
       </MapContainer>
       }
     </div>
