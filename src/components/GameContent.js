@@ -168,8 +168,8 @@ let mapTiles = () => {
       scrollWheelZoom={true}>
         <TileLayer attribution="its offline"
         bounds={bounds}
-        url={`http://localhost:3000/qr/{z}/{x}/{y}.jpg`}/>
-        <Polygon pathOptions={purpleOptions} positions={initialTile} />
+        url={`http://${window.location.hostname}/qr/{z}/{x}/{y}.jpg`}/>
+        <Polygon pathOptions={purpleOptions} positions={tileListState[0]} />
       </MapContainer>
       }
     </div>
