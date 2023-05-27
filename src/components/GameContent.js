@@ -70,7 +70,7 @@ export default GameContent;
 
 */
 
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, Polygon } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from "react";
 
@@ -87,9 +87,73 @@ const GameContent = () => {
     if(window.innerWidth > 1920){
       setMinZoomState(4);
     }
+    mapTiles()
     setPageLoaded(true);
   })
 
+
+
+  
+  const [initialTile, setInitialTile] = useState([
+    [0, 5],
+    [3, 0],
+    [9, 0],
+    [12, 5],
+    [9, 10],
+    [3, 10]
+  ]
+);
+const [moveValue, setMoveValue] = useState(200);
+
+
+
+const [tileListState, setTileListState] = useState(false);
+
+//function made by Pablitos
+
+let mapTiles = () => {
+
+    let tilesList = [initialTile];
+    let i = 1;
+    let spaceAbove = 0;
+    let spaceBetween = 18;
+    let jumpSpaces = 0;
+    while(tilesList[i-1][5][1] < 11){
+        while (tilesList[i - 1][3][0] + spaceBetween < 16359) {
+            tilesList.push([[tilesList[i - 1][0][0] + spaceBetween + jumpSpaces,  tilesList[i - 1][0][1]], 
+              [tilesList[i - 1][1][0] + spaceBetween + jumpSpaces, tilesList[i - 1][1][1]],
+              [tilesList[i - 1][2][0] + spaceBetween + jumpSpaces, tilesList[i - 1][2][1]],
+              [tilesList[i - 1][3][0] + spaceBetween + jumpSpaces, tilesList[i - 1][3][1]],
+              [tilesList[i - 1][4][0] + spaceBetween + jumpSpaces, tilesList[i - 1][4][1]],
+              [tilesList[i - 1][5][0] + spaceBetween + jumpSpaces, tilesList[i - 1][5][1]]]
+            )
+            i = i + 1;
+        }
+
+        if(jumpSpaces == 0){
+            jumpSpaces = 9;
+        }else {
+            jumpSpaces = 0;
+        }
+        spaceAbove = spaceAbove + 10;
+
+        if(tilesList[i - 1][4][0] + spaceBetween > 16359){
+            tilesList.push([
+              [tilesList[0][0][0] + jumpSpaces, tilesList[0][0][1] + spaceAbove],
+              [tilesList[0][1][0] + jumpSpaces, tilesList[0][1][1] + spaceAbove],
+              [tilesList[0][2][0] + jumpSpaces, tilesList[0][2][1] + spaceAbove],
+              [tilesList[0][3][0] + jumpSpaces, tilesList[0][3][1] + spaceAbove],
+              [tilesList[0][4][0] + jumpSpaces, tilesList[0][4][1] + spaceAbove],
+              [tilesList[0][5][0] + jumpSpaces, tilesList[0][5][1] + spaceAbove]
+              ])
+            i = i + 1;
+        }
+    }
+    setTileListState(tilesList);
+  }
+
+
+  const purpleOptions = { color: 'purple' }
 
 
   return (
@@ -104,7 +168,8 @@ const GameContent = () => {
       scrollWheelZoom={true}>
         <TileLayer attribution="its offline"
         bounds={bounds}
-        url={`https://${window.location.hostname}/qr/{z}/{x}/{y}.jpg`}/>
+        url={`http://localhost:3000/qr/{z}/{x}/{y}.jpg`}/>
+        <Polygon pathOptions={purpleOptions} positions={initialTile} />
       </MapContainer>
       }
     </div>
