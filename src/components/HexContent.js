@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
+import {CRS} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const Mapa = () => {
   const [hexagonos, setHexagonos] = useState([]);
-  const bounds = [[-69, -180], [69, 180]];
+  const bounds = [[-49, -180], [49, 0]];
   const [minZoomState, setMinZoomState] = useState(3); 
   const [pageLoaded, setPageLoaded] = useState(false); 
 
   useEffect(() => {
     // Definir los límites del mapa
     const bounds = [
-      [-69, -180], // Esquina suroeste del mapa
-      [69, 180] // Esquina noreste del mapa
+      [-48, -180], // Esquina suroeste del mapa
+      [48, 0] // Esquina noreste del mapa
     ];
     const cellSize = 1; // Tamaño de la celda hexagonal (grados)
 
@@ -64,11 +65,12 @@ const Mapa = () => {
     <MapContainer center={[0, 0]} zoom={3}
     minZoom={minZoomState} // Nivel de zoom mínimo permitido
     maxZoom={6} // Nivel de zoom máximo permitido
+    crs={CRS.EPSG4326}
     maxBounds={bounds}
     maxBoundsViscosity={1} style={{ height: '100vh', width: '100%' }}>
       <TileLayer
         url="http://localhost:3000/qr/{z}/{x}/{y}.jpg"
-        attribution="© OpenStreetMap contributors"
+        bounds={bounds}
       />
       {hexagonos.map((coords, index) => (
         <Polygon key={index} positions={coords} color="gray" fillColor="transparent" weight={1} fillOpacity={0.5} />
