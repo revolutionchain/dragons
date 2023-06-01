@@ -69,7 +69,7 @@ const Mapa = () => {
     maxBounds={bounds}
     maxBoundsViscosity={1} style={{ height: '100vh', width: '100%' }}>
       <TileLayer
-        url="http://localhost:3000/qr/{z}/{x}/{y}.jpg"
+        url={`https://${window.location.hostname}/qr/{z}/{x}/{y}.jpg`}
         bounds={bounds}
       />
       {hexagonos.map((coords, index) => (
