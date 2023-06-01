@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Home.css'
 import { useState, useEffect } from 'react';
-import GameContent from './GameContent';
+import Mapa from './HexContent';
 
 
 
@@ -13,7 +13,7 @@ export default function Home() {
 
     return (
         <div className='map'>
-            <GameContent />
+            <Mapa />
         </div>
     )
 }
