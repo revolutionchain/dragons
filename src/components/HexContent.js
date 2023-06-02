@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
+import React, { useEffect, useState, useRef  } from 'react';
+import { MapContainer, TileLayer, Polygon, Tooltip, Pane, Popup } from 'react-leaflet';
 import {CRS} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import '../styles/Home.css'
 
 const Mapa = () => {
-  const [hexagonos, setHexagonos] = useState([]);
   const bounds = [[-49, -180], [49, 0]];
+  const [hexagonos, setHexagonos] = useState([]);
   const [minZoomState, setMinZoomState] = useState(3); 
   const [pageLoaded, setPageLoaded] = useState(false); 
+  const [ selectedTile, setSelectedTile ] = useState(-90);
 
   useEffect(() => {
     // Definir los límites del mapa
@@ -60,6 +62,8 @@ const Mapa = () => {
     return hexGrid;
   };
 
+
+
   return (
     <div>{ pageLoaded &&
     <MapContainer center={[0, 0]} zoom={3}
@@ -72,9 +76,16 @@ const Mapa = () => {
         url={`https://${window.location.hostname}/qr/{z}/{x}/{y}.jpg`}
         bounds={bounds}
       />
-      {hexagonos.map((coords, index) => (
-        <Polygon key={index} positions={coords} color="gray" fillColor="transparent" weight={1} fillOpacity={0.5} />
-      ))}
+      {hexagonos.map((coords, index) => (     
+        <Polygon key={index} positions={coords} color="yellow" fillColor={selectedTile == index ? "red" : "transparent"} weight={1}  
+        pathOptions={selectedTile == index ? { fillColor: "yellow" } : { fillColor: "transparent" }}
+        eventHandlers={{
+          click: () => setSelectedTile(index)
+        }}
+        fillOpacity={0.5} >
+        <Popup className={coords[0][0] > 38 && "leaflet-popup-top"} >{ `lng: ${coords[0][1]}, Lat: ${coords[0][0]+1}`}</Popup>
+    </Polygon>
+       ))}
     </MapContainer>}
     </div>
   );

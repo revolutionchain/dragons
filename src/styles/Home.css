@@ -126,3 +126,24 @@ html {
 
     
 }
+
+
+
+.leaflet-popup-padding {
+    padding-top: 30px;
+}
+
+.leaflet-popup-top .leaflet-popup-content-wrapper {
+    padding: 1px;
+    text-align: left;
+    border-radius: 12px;
+    margin-bottom: -64px;
+}
+
+.leaflet-popup-top .leaflet-popup-tip-container .leaflet-popup-tip {
+    margin-top: 15px;
+}
+
+.leaflet-popup-top {
+    margin-bottom: 0px !important;
+}
