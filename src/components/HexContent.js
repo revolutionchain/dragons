@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import '../styles/Home.css'
 
 const Mapa = () => {
-  const bounds = [[-49, -180], [49, 0]];
+  const bounds = [[-48, -180], [48.65, -1]];
   const [hexagonos, setHexagonos] = useState([]);
   const [minZoomState, setMinZoomState] = useState(3); 
   const [pageLoaded, setPageLoaded] = useState(false); 
@@ -37,8 +37,8 @@ const Mapa = () => {
   useEffect(() => {
     // Definir los límites del mapa
     const bounds = [
-      [-48, -180], // Esquina suroeste del mapa
-      [48, 0] // Esquina noreste del mapa
+      [-47.75, -179], // Esquina suroeste del mapa
+      [47.75, -1] // Esquina noreste del mapa
     ];
     const cellSize = 1; // Tamaño de la celda hexagonal (grados)
 
@@ -66,19 +66,19 @@ const Mapa = () => {
       if (rowOffset % 2 !== 0) {
         offset = cellSize+0.5 ;
       }
-      while (lng < neLng) {
+      while (lng < neLng - offset) {
         const hexCoords = [
-          [lat, lng - (cellSize / 2) + offset],
-          [lat, lng + (cellSize /2) + offset],
-          [lat + (cellSize/2), lng + cellSize + offset],
-          [lat + cellSize, lng + (cellSize/2) + offset],
-          [lat +  cellSize, lng - (cellSize/2) + offset],
-          [lat + (cellSize/2), lng -cellSize + offset]
+          [lat - cellSize*0.2, lng - (cellSize / 2) + offset],
+          [lat- cellSize*0.2, lng + (cellSize /2) + offset],
+          [lat + (cellSize/1.5), lng + cellSize + offset],
+          [lat + cellSize + cellSize/2, lng + (cellSize/2) + offset],
+          [lat +  cellSize + cellSize/2, lng - (cellSize/2) + offset],
+          [lat + (cellSize/1.5), lng -cellSize + offset]
         ];
         hexGrid.push(hexCoords);
         lng += cellSize * 3;
       }
-      lat += cellSize/2 ;
+      lat += cellSize/1.17 ;
       rowOffset++;
     }
 
@@ -110,7 +110,7 @@ const Mapa = () => {
       />
       <MyMapComponent />
       {hexagonos.map((coords, index) => (     
-        <Polygon key={index} positions={coords} color="yellow" fillColor={selectedTile == index ? "red" : "transparent"} weight={1}  
+        <Polygon key={index} positions={coords} color="yellow" fillColor={selectedTile == index ? "red" : "transparent"} weight={2}  
         pathOptions={ {fillColor: selectedTile == index ? "yellow" : "transparent", color: currentZoom == 6 ? "yellow" : "transparent"} }
         eventHandlers={{
           click: () => setSelectedTile(index)
