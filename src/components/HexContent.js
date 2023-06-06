@@ -64,8 +64,6 @@ const Mapa = () => {
 
 */
 
-    useEffect(() => {
-    }, [map]);
 
     return null;
   }
@@ -153,12 +151,12 @@ const Mapa = () => {
         <MyMapComponent />
         {renderedTiles && renderedTiles.map((coords, index) => (
           <Polygon key={index} positions={coords} color="yellow" fillColor={selectedTile == index ? "red" : "transparent"} weight={2}
-            pathOptions={{ fillColor: selectedTile == index ? "yellow" : "transparent", color: currentZoom == 6 ? "yellow" : "transparent" }}
+            pathOptions={{ fillColor: selectedTile[0] == coords[5][0] && selectedTile[1] > coords[0][1] && selectedTile[1] < coords[1][1] ? "yellow" : "transparent", color: currentZoom == 6 ? "yellow" : "transparent" }}
             eventHandlers={{
-              click: () => setSelectedTile(index)
+              click: () => setSelectedTile([coords[5][0], coords[0][1] + 0.5])
             }}
             fillOpacity={0.5} >
-            <Popup className={coords[0][0] > 38 && "leaflet-popup-top"} >{`lng: ${coords[0][1]}, Lat: ${coords[0][0] + 1}`}</Popup>
+            <Popup className={coords[0][0] > 38 && "leaflet-popup-top"} >{`lng: ${selectedTile[1]}, Lat: ${selectedTile[0]}`}</Popup>
           </Polygon>
         ))}
       </MapContainer>}
