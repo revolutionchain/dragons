@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, Polygon, Popup, useMap, useMapEvents } from 'react-leaflet';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { MapContainer, TileLayer, Polygon, Popup, useMap,useMapEvents, Rectangle, useMapEvent } from 'react-leaflet';
+import { useEventHandlers } from '@react-leaflet/core'
 import { CRS } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../styles/Home.css'
@@ -20,7 +21,7 @@ const Mapa = () => {
 
     const handleTiles = (currentBounds, zoom = 0) => {
       let torenderTiles = [];
-      if (zoom == 6) {
+      if (zoom == 8) {
         hexagonos.map((tile, id) => {
           if ((tile[0][0]+1 > (currentBounds)._southWest.lat && tile[5][1]+1 > (currentBounds)._southWest.lng) && tile[4][0]-1 < (currentBounds)._northEast.lat && tile[2][1]-1 < (currentBounds)._northEast.lng) {
             torenderTiles.push(tile);
@@ -48,23 +49,6 @@ const Mapa = () => {
         handleTiles(e.target.getBounds(), zoom);
     },
     });
-
-/*
-    const handleZoomChange = () => {
-      const zoom = map.getZoom();
-      console.log('Zoom actual:', zoom);
-      setCurrentZoom(zoom);     
-
-    };
-
-
-    map.on('zoomend', handleZoomChange);
-
-    return () => {
-      map.off('zoomend', handleZoomChange);
-    };
-
-*/
 
 
     return null;
@@ -128,21 +112,87 @@ const Mapa = () => {
   };
 
 
-  /*
 
-          [lat, lng + offset],
-          [lat + cellSize / 2, lng + cellSize + offset],
-          [lat + cellSize + cellSize / 2, lng + cellSize + offset],
-          [lat + cellSize * 2, lng + offset],
-          [lat + cellSize + cellSize / 2, lng - cellSize + offset],
-          [lat + cellSize / 2, lng - cellSize + offset]
 
-*/
+
+  
+const POSITION_CLASSES = {
+  bottomleft: 'leaflet-bottom leaflet-left',
+  bottomright: 'leaflet-bottom leaflet-right',
+  topleft: 'leaflet-top leaflet-left',
+  topright: 'leaflet-top leaflet-right',
+}
+
+const BOUNDS_STYLE = { weight: 0.5 }
+
+function MinimapBounds({ parentMap, zoom }) {
+  const minimap = useMap()
+
+  // Clicking a point on the minimap sets the parent's map center
+  const onClick = useCallback(
+    (e) => {
+      parentMap.setView(e.latlng, parentMap.getZoom())
+    },
+    [parentMap],
+  )
+  useMapEvent('click', onClick)
+
+  // Keep track of bounds in state to trigger renders
+    const [bounds, setBounds] = useState(parentMap.getBounds())
+    const onChange = useCallback(() => {
+      setBounds(parentMap.getBounds())
+      // Update the minimap's view to match the parent map's center and zoom
+      minimap.setView(parentMap.getCenter(), zoom)
+    }, [minimap, parentMap, zoom])
+  
+  // Listen to events on the parent map
+  const handlers = useMemo(() => ({ move: onChange, zoom: onChange }), [])
+  useEventHandlers({ instance: parentMap }, handlers)
+
+  return <Rectangle bounds={bounds} pathOptions={BOUNDS_STYLE} />
+}
+
+function MinimapControl({ position, zoom }) {
+  const parentMap = useMap()
+  const mapZoom = zoom || 0
+
+  // Memoize the minimap so it's not affected by position changes
+  const minimap = useMemo(
+    () => (
+      <MapContainer
+        style={{ height: 160, width: 340 }}
+        center={parentMap.getCenter()}
+        zoom={mapZoom}
+        dragging={false}
+        crs={CRS.EPSG4326}
+        maxBoundsViscosity={1}
+        maxBounds={bounds}
+        doubleClickZoom={false}
+        scrollWheelZoom={false}
+        attributionControl={false}
+        zoomControl={false}>
+        <TileLayer url={`http://${"localhost:3000"}/qr/{z}/{x}/{y}.jpg`} />
+        <MinimapBounds parentMap={parentMap} zoom={mapZoom} />
+      </MapContainer>
+    ),
+    [],
+  )
+
+  const positionClass =
+    (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topright
+  return (
+    <div className={positionClass}>
+      <div className="leaflet-control leaflet-bar">{minimap}</div>
+    </div>
+  )
+}
+
+
   return (
     <div>{pageLoaded &&
-      <MapContainer center={[0, 0]} zoom={4}
+      <MapContainer center={[0, -89]} zoom={4}
         minZoom={minZoomState} // Nivel de zoom mínimo permitido pathOptions={selectedTile == index ? { fillColor: "yellow" } : { fillColor: "transparent" }}
-        maxZoom={6} // Nivel de zoom máximo permitido 
+        maxZoom={8} // Nivel de zoom máximo permitido 
         crs={CRS.EPSG4326}
         maxBounds={bounds}
         maxBoundsViscosity={1} style={{ height: '100vh', width: '100%' }}>
@@ -153,7 +203,7 @@ const Mapa = () => {
         <MyMapComponent />
         {renderedTiles && renderedTiles.map((coords, index) => (
           <Polygon key={index} positions={coords} color="yellow" fillColor={selectedTile == index ? "red" : "transparent"} weight={2}
-            pathOptions={{ fillColor: selectedTile[0] == coords[5][0] && selectedTile[1] > coords[0][1] && selectedTile[1] < coords[1][1] ? "yellow" : "transparent", color: currentZoom == 6 ? "yellow" : "transparent" }}
+            pathOptions={{ fillColor: selectedTile[0] == coords[5][0] && selectedTile[1] > coords[0][1] && selectedTile[1] < coords[1][1] ? "yellow" : "transparent", color: currentZoom == 8 ? "yellow" : "transparent" }}
             eventHandlers={{
               click: () => setSelectedTile([coords[5][0], coords[0][1] + 0.125])
             }}
@@ -161,6 +211,7 @@ const Mapa = () => {
             <Popup className={coords[0][0] > 38 && "leaflet-popup-top"} >{`lng: ${selectedTile[1]}, Lat: ${selectedTile[0]}`}</Popup>
           </Polygon>
         ))}
+        <MinimapControl zoom={2}  position="bottomright" />
       </MapContainer>}
     </div>
   );
