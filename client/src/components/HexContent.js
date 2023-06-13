@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { MapContainer, TileLayer, Polygon, Popup, useMap,useMapEvents, Rectangle, useMapEvent } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon, Popup, useMap,useMapEvents, Rectangle, useMapEvent, ZoomControl } from 'react-leaflet';
 import { useEventHandlers } from '@react-leaflet/core'
 import { CRS } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../styles/Home.css'
+import '../styles/HexContent.css'
+import Interface from './Inventory';
 
 const Mapa = () => {
   const bounds = [[-15.76, -157.5], [15.9, -22.65]];
@@ -37,7 +38,6 @@ const Mapa = () => {
     }
 
 
-    const map = useMap();
     const mapE = useMapEvents({
       dragend: (e) => {
         let zoom = e.target.getZoom()
@@ -73,7 +73,7 @@ const Mapa = () => {
     setHexagonos(hexGrid);
 
     if (window.innerWidth > 1920) {
-      setMinZoomState(4);
+      setMinZoomState(6);
     }
     setPageLoaded(true);
   }, []);
@@ -159,8 +159,15 @@ function MinimapControl({ position, zoom }) {
   // Memoize the minimap so it's not affected by position changes
   const minimap = useMemo(
     () => (
+      <div style={{padding: '11px 13px'}}>
+      
+      <div className='inv-img-container'>
+            <img className='inv-img' src='http://localhost:3000/images/inventory.png' />
+        </div>
       <MapContainer
-        style={{ height: 160, width: 340 }}
+
+      className='minimap-container'
+        style={{ height: 160, width: 340, zIndex: 10000, borderRadius: "15px", marginTop: "-1px", border: "solid 1px gray" }}
         center={parentMap.getCenter()}
         zoom={mapZoom}
         dragging={false}
@@ -171,9 +178,11 @@ function MinimapControl({ position, zoom }) {
         scrollWheelZoom={false}
         attributionControl={false}
         zoomControl={false}>
+
         <TileLayer url={`http://${"localhost:3000"}/qr/{z}/{x}/{y}.jpg`} />
         <MinimapBounds parentMap={parentMap} zoom={mapZoom} />
       </MapContainer>
+      </div>
     ),
     [],
   )
@@ -189,12 +198,14 @@ function MinimapControl({ position, zoom }) {
 
 
   return (
-    <div>{pageLoaded &&
+    <div className='main-hex' >{pageLoaded &&
       <MapContainer center={[0, -89]} zoom={4}
         minZoom={minZoomState} // Nivel de zoom mínimo permitido pathOptions={selectedTile == index ? { fillColor: "yellow" } : { fillColor: "transparent" }}
         maxZoom={8} // Nivel de zoom máximo permitido 
         crs={CRS.EPSG4326}
         maxBounds={bounds}
+        zoomControl={false}
+        attributionControl={false}
         maxBoundsViscosity={1} style={{ height: '100vh', width: '100%' }}>
         <TileLayer
           url={`http://${"localhost:3000"}/qr/{z}/{x}/{y}.jpg`}
@@ -212,6 +223,7 @@ function MinimapControl({ position, zoom }) {
           </Polygon>
         ))}
         <MinimapControl zoom={2}  position="bottomright" />
+        <ZoomControl position='topright' style={{marginTop: "15px"}} />
       </MapContainer>}
     </div>
   );

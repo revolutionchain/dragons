@@ -1,0 +1,14 @@
+
+.main-hex {
+    position: relative;
+    z-index: 50;
+}
+
+.minimap-container{
+    z-index: 1010;
+    position: relative;
+}
+
+.leaflet-control-zoom{
+    top: 50px !important;
+}

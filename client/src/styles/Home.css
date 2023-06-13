@@ -147,3 +147,7 @@ html {
 .leaflet-popup-top {
     margin-bottom: 0px !important;
 }
+
+.map {
+    position: relative;
+}
