@@ -165,7 +165,7 @@ function MinimapControl({ position, zoom }) {
       <div className='minimap-box' >
       
       <div className='inv-img-container'>
-            <img className='inv-img' src={`${currentUrl}/images/inventory.png`} />
+            <img className='inv-img' src={`${currentUrl}/images/inventory.jpg`} />
         </div>
       <MapContainer
 

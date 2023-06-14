@@ -25,7 +25,7 @@ export default function Resources ()  {
   return (
     <div className='main-resources' style={{backgroundColor: "transparent"}} >
         <div className='inv-img-container'  >
-            <img className='inv-img' src={`${currentUrl}/images/resources.png`} />
+            <img className='inv-img' src={`${currentUrl}/images/resources.jpg`} />
         </div>
     <div className="inv-content res-content" >
       {rows.map((row, rowIndex) => (

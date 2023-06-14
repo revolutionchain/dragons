@@ -35,7 +35,7 @@ export default function Inventory ()  {
   return (
     <div className='main-interface' >
         <div className='inv-img-container'>
-            <img className='inv-img' src={`${currentUrl}/images/inventory.png`} />
+            <img className='inv-img' src={`${currentUrl}/images/inventory.jpg`} />
         </div>
     <div className="inv-content">
       {rows.map((row, rowIndex) => (
