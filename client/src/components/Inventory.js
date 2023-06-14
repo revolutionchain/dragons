@@ -4,6 +4,8 @@ import InventoryItem from './InventoryItem';
 
 export default function Inventory ()  {
 
+  const currentUrl = window.location.host == 'localhost:3000' ? 'http://localhost:3000' : `https://${window.location.hostname}`;
+
     const inventory = [
         { quantity: 100 },
         { quantity: 100 },
@@ -33,7 +35,7 @@ export default function Inventory ()  {
   return (
     <div className='main-interface' >
         <div className='inv-img-container'>
-            <img className='inv-img' src='http://localhost:3000/images/inventory.png' />
+            <img className='inv-img' src={`${currentUrl}/images/inventory.png`} />
         </div>
     <div className="inv-content">
       {rows.map((row, rowIndex) => (

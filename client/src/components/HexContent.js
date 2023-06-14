@@ -7,6 +7,7 @@ import '../styles/HexContent.css'
 import Interface from './Inventory';
 
 const Mapa = () => {
+  const currentUrl = window.location.host == 'localhost:3000' ? 'http://localhost:3000' : `https://${window.location.hostname}`;
   const bounds = [[-15.76, -157.5], [15.9, -22.65]];
   const [hexagonos, setHexagonos] = useState([]);
   const [minZoomState, setMinZoomState] = useState(4);
@@ -74,6 +75,8 @@ const Mapa = () => {
 
     if (window.innerWidth > 1920) {
       setMinZoomState(6);
+    }else if (window.innerWidth < 500){
+      setMinZoomState(4);
     }
     setPageLoaded(true);
   }, []);
@@ -159,10 +162,10 @@ function MinimapControl({ position, zoom }) {
   // Memoize the minimap so it's not affected by position changes
   const minimap = useMemo(
     () => (
-      <div style={{padding: '11px 13px'}}>
+      <div className='minimap-box' >
       
       <div className='inv-img-container'>
-            <img className='inv-img' src='http://localhost:3000/images/inventory.png' />
+            <img className='inv-img' src={`${currentUrl}/images/inventory.png`} />
         </div>
       <MapContainer
 
@@ -179,7 +182,7 @@ function MinimapControl({ position, zoom }) {
         attributionControl={false}
         zoomControl={false}>
 
-        <TileLayer url={`http://${"localhost:3000"}/qr/{z}/{x}/{y}.jpg`} />
+        <TileLayer url={`${currentUrl}/qr/{z}/{x}/{y}.jpg`} />
         <MinimapBounds parentMap={parentMap} zoom={mapZoom} />
       </MapContainer>
       </div>
@@ -206,9 +209,9 @@ function MinimapControl({ position, zoom }) {
         maxBounds={bounds}
         zoomControl={false}
         attributionControl={false}
-        maxBoundsViscosity={1} style={{ height: '100vh', width: '100%' }}>
+        maxBoundsViscosity={1} style={{ height: '100%', width: '100%' }}>
         <TileLayer
-          url={`http://${"localhost:3000"}/qr/{z}/{x}/{y}.jpg`}
+          url={`${currentUrl}/qr/{z}/{x}/{y}.jpg`}
           bounds={bounds}
         />
         <MyMapComponent />

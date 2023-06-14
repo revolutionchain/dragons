@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Mapa from './HexContent';
 import Inventory from './Inventory';
 import Resources from './Resources';
+import Profile from './Profile';
 
 
 
@@ -17,6 +18,7 @@ export default function Home() {
         <div className='map'>
             <Inventory />
             <Resources />
+            <Profile />
             <Mapa />
             
         </div>

@@ -3,6 +3,7 @@ import '../styles/Interface.css'
 import InventoryItem from './InventoryItem';
 
 export default function Resources ()  {
+  const currentUrl = window.location.host == 'localhost:3000' ? 'http://localhost:3000' : `https://${window.location.hostname}`;
 
     const inventory = [
         { name: 'Wood', quantity: 100 },
@@ -23,14 +24,14 @@ export default function Resources ()  {
       }
   return (
     <div className='main-resources' style={{backgroundColor: "transparent"}} >
-        <div className='inv-img-container'  style={{height: "90%"}}>
-            <img className='inv-img' src='http://localhost:3000/images/resources.png' />
+        <div className='inv-img-container'  >
+            <img className='inv-img' src={`${currentUrl}/images/resources.png`} />
         </div>
-    <div className="inv-content" style={{marginTop: "-7px", marginLeft: "35px"}}>
+    <div className="inv-content res-content" >
       {rows.map((row, rowIndex) => (
-        <div className="inventory-row" key={rowIndex}>
+        <div className="inventory-row res-row" key={rowIndex}>
           {row.map((item, index) => (
-            <InventoryItem key={index} name={item.name} quantity={item.quantity} />
+            <InventoryItem key={index} name={item.name} quantity={item.quantity} pos={index} />
           ))}
         </div>
       ))}

@@ -2,6 +2,7 @@
 .main-hex {
     position: relative;
     z-index: 50;
+    height: calc(100vh - 62px);
 }
 
 .minimap-container{
@@ -9,6 +10,15 @@
     position: relative;
 }
 
-.leaflet-control-zoom{
-    top: 50px !important;
+.minimap-box {
+    padding: 11px 13px;
 }
+
+
+
+@media (max-width: 500px) {
+    .minimap-box {
+        display: none;
+    }
+  
+  }
