@@ -34,6 +34,14 @@ export default function Inventory ()  {
       }
   return (
     <div className='main-interface' >
+      <div className='inv-buttons-container'>
+      <button >1</button>
+      <div className='center-button-container'>
+        <button  >2</button>
+      </div>
+      <button >3</button>
+      </div>
+      <button style={{marginTop: "-10px"}}>X</button>
         <div className='inv-img-container'>
             <img className='inv-img' src={`${currentUrl}/images/inventory.jpg`} />
         </div>

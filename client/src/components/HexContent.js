@@ -76,7 +76,7 @@ const Mapa = () => {
     if (window.innerWidth > 1920) {
       setMinZoomState(6);
     }else if (window.innerWidth < 500){
-      setMinZoomState(4);
+      setMinZoomState(5);
     }
     setPageLoaded(true);
   }, []);
