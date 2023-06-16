@@ -37,14 +37,14 @@ export default function Inventory() {
   const [buttonsState, setButtonsState] = useState(false);
   return (
     <div className='main-interface' >
-      <div className={!buttonsState ? 'inv-buttons-container' : 'hidden'}>
+      <div className={!buttonsState ? 'mobile-elements inv-buttons-container' : 'hidden mobile-elements'}>
         <button>1</button>
         <div className='center-button-container'>
           <button>2</button>
         </div>
         <button>3</button>
       </div>
-      <button className={buttonsState ? 'hidden-button' : ''} style={{ marginTop: "-10px" }} onClick={() => {
+      <button className={buttonsState ? 'mobile-elements hidden-button' : 'mobile-elements'} style={{ marginTop: "-20px", padding: "10px 15px" }} onClick={() => {
         setButtonsState(!buttonsState);
       }}>{!buttonsState && 'X'}</button>
       <div className='inv-img-container'>
