@@ -144,8 +144,9 @@
     background-color: transparent;
     padding: 0;
     margin-left: 0;
-    width: 100vw;
+    width: 45vw;
     text-align: center;
+    margin: auto;
     margin-bottom: 50px;
   }
 
@@ -184,6 +185,20 @@
   }
 
   .inventory-row {    
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .hidden-button {
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    transform: rotate(45deg);
+    border: 3px solid black !important;
+    border-bottom: none !important;
+    border-right: none !important;
+    padding: 20px !important;    
   }
 
 }
